@@ -16,6 +16,7 @@ public class LevelLoaderScript : MonoBehaviour
     [SerializeField] private GameObject _storageBlock;
     [SerializeField] private GameObject _playerPrefab;
     [SerializeField] private GameObject _parent;
+    [SerializeField] private InputManager _inputManager;
 
     [SerializeField] private GameObject _gridShader;
 
@@ -69,7 +70,8 @@ public class LevelLoaderScript : MonoBehaviour
                 switch (arr[i][j])
                 {
                     case 'x':
-                        Instantiate(_playerPrefab, new Vector2(j, arr[i].Count - i), new Quaternion(), _parent.transform);
+                        GameObject pl = Instantiate(_playerPrefab, new Vector2(j, arr[i].Count - i), new Quaternion(), _parent.transform);
+                        _inputManager._player = pl.GetComponent<PlayerMover>();
                         break;
                     case '#':
                         Instantiate(_wallBlock, new Vector2(j, arr[i].Count - i), new Quaternion(), _parent.transform);
