@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class LevelLoaderScript : MonoBehaviour
 {
@@ -18,6 +19,9 @@ public class LevelLoaderScript : MonoBehaviour
     [SerializeField] private GameObject _playerPrefab;
     [SerializeField] private GameObject _parent;
     [SerializeField] private InputManager _inputManager;
+
+    [SerializeField] private Tilemap _wallsTilemap;
+    [SerializeField] private TileBase _wallTileBase;
 
     [SerializeField] private GameObject _gridShader;
 
@@ -67,23 +71,28 @@ public class LevelLoaderScript : MonoBehaviour
         {
             for(int j = 0; j < arr[i].Count; j++)
             {
-                Instantiate(_grassBlock, new Vector2(j, arr[i].Count - i),new Quaternion(),_parent.transform);
                 switch (arr[i][j])
                 {
+                    case '.':
+                        Instantiate(_grassBlock, new Vector2(j, arr[i].Count - i),new Quaternion(),_parent.transform);
+                        break;
                     case 'x':
                         GameObject pl = Instantiate(_playerPrefab, new Vector2(j, arr[i].Count - i), new Quaternion(), _parent.transform);
                         _inputManager._player = pl.GetComponent<PlayerMover>();
+                        Instantiate(_grassBlock, new Vector2(j, arr[i].Count - i), new Quaternion(), _parent.transform);
                         break;
                     case '#':
                         Instantiate(_wallBlock, new Vector2(j, arr[i].Count - i), new Quaternion(), _parent.transform);
                         break;
                     case '*':
                         Instantiate(_crateBlock, new Vector2(j, arr[i].Count - i), new Quaternion(), _parent.transform);
+                        Instantiate(_grassBlock, new Vector2(j, arr[i].Count - i), new Quaternion(), _parent.transform);
                         break;
                     case 'o':
                         Instantiate(_storageBlock, new Vector2(j, arr[i].Count - i), new Quaternion(), _parent.transform);
                         break;
-                    default: 
+                    default:
+                        _wallsTilemap.SetTile(new Vector3Int(i, j), _wallTileBase);
                         break;
                 }
             }
@@ -91,19 +100,19 @@ public class LevelLoaderScript : MonoBehaviour
 
         for(int i = 0; i <= arr.Count +1; i++)
         {
-            Instantiate(_outerWallBlock, new Vector2(-1, i), new Quaternion(), _parent.transform);
+            _wallsTilemap.SetTile(new Vector3Int(-1, i), _wallTileBase);
         }
         for (int i = 0; i <= arr.Count + 1; i++)
         {
-            Instantiate(_outerWallBlock, new Vector2(arr[0].Count, i), new Quaternion(), _parent.transform);
+            _wallsTilemap.SetTile(new Vector3Int(arr[0].Count,i), _wallTileBase);
         }
         for (int i = 0; i <= arr.Count; i++)
         {
-            Instantiate(_outerWallBlock, new Vector2(i, 0), new Quaternion(), _parent.transform);
+            _wallsTilemap.SetTile(new Vector3Int(i, 0), _wallTileBase);
         }
         for (int i = 0; i <= arr.Count; i++)
         {
-            Instantiate(_outerWallBlock, new Vector2(i, arr.Count + 1), new Quaternion(), _parent.transform);
+            _wallsTilemap.SetTile(new Vector3Int(i, arr.Count + 1), _wallTileBase);
         }
 
         var shPos = _gridShader.transform;
