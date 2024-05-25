@@ -115,10 +115,8 @@ public class LevelLoaderScript : MonoBehaviour
         }
 
         var shPos = _gridShader.transform;
-        //shPos.position = new Vector2(1, (arr.OrderByDescending(x => x.Count).First().Count + 2)/2);
-        //shPos.localScale = new Vector3( arr.Count + 2,arr.OrderByDescending(x => x.Count).First().Count + 2, arr.OrderByDescending(x => x.Count).First().Count + 2);
         shPos.position = new Vector2(0.5f,0.5f);
-        shPos.localScale = new Vector3((arr.Count + 2) * 5, arr.OrderByDescending(x => x.Count).First().Count + 2, arr.OrderByDescending(x => x.Count).First().Count + 2);
+        shPos.localScale = new Vector3((arr.Count + 2) * 5, (arr.OrderByDescending(x => x.Count).First().Count + 2)*3, (arr.OrderByDescending(x => x.Count).First().Count + 2) * 3);
 
         _camera.transform.position = _player.transform.position;
         _camera.transform.position += new Vector3(0, 0, -1);
