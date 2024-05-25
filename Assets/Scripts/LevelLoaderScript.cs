@@ -12,6 +12,7 @@ public class LevelLoaderScript : MonoBehaviour
 
     [SerializeField] private GameObject _grassBlock;
     [SerializeField] private GameObject _wallBlock;
+    [SerializeField] private GameObject _outerWallBlock;
     [SerializeField] private GameObject _crateBlock;
     [SerializeField] private GameObject _storageBlock;
     [SerializeField] private GameObject _playerPrefab;
@@ -88,14 +89,31 @@ public class LevelLoaderScript : MonoBehaviour
             }
         }
 
+        for(int i = 0; i <= arr.Count +1; i++)
+        {
+            Instantiate(_outerWallBlock, new Vector2(-1, i), new Quaternion(), _parent.transform);
+        }
+        for (int i = 0; i <= arr.Count + 1; i++)
+        {
+            Instantiate(_outerWallBlock, new Vector2(arr[0].Count, i), new Quaternion(), _parent.transform);
+        }
+        for (int i = 0; i <= arr.Count; i++)
+        {
+            Instantiate(_outerWallBlock, new Vector2(i, 0), new Quaternion(), _parent.transform);
+        }
+        for (int i = 0; i <= arr.Count; i++)
+        {
+            Instantiate(_outerWallBlock, new Vector2(i, arr.Count + 1), new Quaternion(), _parent.transform);
+        }
+
         var shPos = _gridShader.transform;
         if(arr.Count % 2 == 0)
             shPos.position = new Vector2(arr[0].Count/2 - 0.5f, arr.Count / 2 + 0.5f);
         else
         {
-            shPos.position = new Vector2(arr[0].Count / 2, arr.Count / 2 + 1);
+            shPos.position = new Vector2(arr[0].Count / 2, arr.Count / 2 + 1 );
         }
-        shPos.localScale = new Vector3(arr[0].Count, arr.Count, arr.Count);
+        shPos.localScale = new Vector3(arr[0].Count + 2, arr.Count + 2, arr.Count + 2);
 
         _camera.transform.position = new Vector3(shPos.position.x,shPos.position.y,-1);
         _camera.orthographicSize = arr.Count/2 + 1;
