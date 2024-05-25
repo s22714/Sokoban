@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -12,7 +13,7 @@ public class LevelLoaderScript : MonoBehaviour
     private bool _recordLevel = false;
 
     [SerializeField] private GameObject _grassBlock;
-    [SerializeField] private GameObject _wallBlock;
+    [SerializeField] private TileBase _singleWallTile;
     [SerializeField] private GameObject _outerWallBlock;
     [SerializeField] private GameObject _crateBlock;
     [SerializeField] private GameObject _storageBlock;
@@ -23,9 +24,14 @@ public class LevelLoaderScript : MonoBehaviour
     [SerializeField] private Tilemap _wallsTilemap;
     [SerializeField] private TileBase _wallTileBase;
 
+    [SerializeField] private Tilemap _groundTilemap;
+    [SerializeField] private TileBase _groundTileBase;
+
     [SerializeField] private GameObject _gridShader;
 
     [SerializeField] private Camera _camera;
+
+    private GameObject _player;
 
     private void Awake()
     {
@@ -67,30 +73,40 @@ public class LevelLoaderScript : MonoBehaviour
     private void InstantiateLevel(List<List<char>> arr)
     {
 
-        for(int i = 0; i < arr.Count; i++)
+        _wallsTilemap.FloodFill(new Vector3Int(arr.Count, arr.OrderByDescending(x => x.Count).First().Count), _wallTileBase);
+
+        for (int i = 0; i < arr.Count; i++)
         {
             for(int j = 0; j < arr[i].Count; j++)
             {
                 switch (arr[i][j])
                 {
                     case '.':
-                        Instantiate(_grassBlock, new Vector2(j, arr[i].Count - i),new Quaternion(),_parent.transform);
+                        _groundTilemap.SetTile(new Vector3Int(i, j), _groundTileBase);
+                        _wallsTilemap.SetTile(new Vector3Int(i, j), null);
                         break;
                     case 'x':
-                        GameObject pl = Instantiate(_playerPrefab, new Vector2(j, arr[i].Count - i), new Quaternion(), _parent.transform);
-                        _inputManager._player = pl.GetComponent<PlayerMover>();
-                        Instantiate(_grassBlock, new Vector2(j, arr[i].Count - i), new Quaternion(), _parent.transform);
+                        _player = Instantiate(_playerPrefab, new Vector2(i, j), new Quaternion(), _parent.transform);
+                        _inputManager._player = _player.GetComponent<PlayerMover>();
+                        _groundTilemap.SetTile(new Vector3Int(i, j), _groundTileBase);
+                        _wallsTilemap.SetTile(new Vector3Int(i, j), null);
                         break;
                     case '#':
-                        Instantiate(_wallBlock, new Vector2(j, arr[i].Count - i), new Quaternion(), _parent.transform);
+                        _wallsTilemap.SetTile(new Vector3Int(i,j), _singleWallTile);
+                        _groundTilemap.SetTile(new Vector3Int(i,j), _groundTileBase);
                         break;
+                        
                     case '*':
-                        Instantiate(_crateBlock, new Vector2(j, arr[i].Count - i), new Quaternion(), _parent.transform);
-                        Instantiate(_grassBlock, new Vector2(j, arr[i].Count - i), new Quaternion(), _parent.transform);
+                        Instantiate(_crateBlock, new Vector2(i, j), new Quaternion(), _parent.transform);
+                        _groundTilemap.SetTile(new Vector3Int(i, j), _groundTileBase);
+                        _wallsTilemap.SetTile(new Vector3Int(i, j), null);
                         break;
+                    
                     case 'o':
-                        Instantiate(_storageBlock, new Vector2(j, arr[i].Count - i), new Quaternion(), _parent.transform);
+                        Instantiate(_storageBlock, new Vector2(i, j), new Quaternion(), _parent.transform);
+                        _wallsTilemap.SetTile(new Vector3Int(i, j), null);
                         break;
+                    
                     default:
                         _wallsTilemap.SetTile(new Vector3Int(i, j), _wallTileBase);
                         break;
@@ -98,33 +114,15 @@ public class LevelLoaderScript : MonoBehaviour
             }
         }
 
-        for(int i = 0; i <= arr.Count +1; i++)
-        {
-            _wallsTilemap.SetTile(new Vector3Int(-1, i), _wallTileBase);
-        }
-        for (int i = 0; i <= arr.Count + 1; i++)
-        {
-            _wallsTilemap.SetTile(new Vector3Int(arr[0].Count,i), _wallTileBase);
-        }
-        for (int i = 0; i <= arr.Count; i++)
-        {
-            _wallsTilemap.SetTile(new Vector3Int(i, 0), _wallTileBase);
-        }
-        for (int i = 0; i <= arr.Count; i++)
-        {
-            _wallsTilemap.SetTile(new Vector3Int(i, arr.Count + 1), _wallTileBase);
-        }
-
         var shPos = _gridShader.transform;
-        if(arr.Count % 2 == 0)
-            shPos.position = new Vector2(arr[0].Count/2 - 0.5f, arr.Count / 2 + 0.5f);
-        else
-        {
-            shPos.position = new Vector2(arr[0].Count / 2, arr.Count / 2 + 1 );
-        }
-        shPos.localScale = new Vector3(arr[0].Count + 2, arr.Count + 2, arr.Count + 2);
+        //shPos.position = new Vector2(1, (arr.OrderByDescending(x => x.Count).First().Count + 2)/2);
+        //shPos.localScale = new Vector3( arr.Count + 2,arr.OrderByDescending(x => x.Count).First().Count + 2, arr.OrderByDescending(x => x.Count).First().Count + 2);
+        shPos.position = new Vector2(0.5f,0.5f);
+        shPos.localScale = new Vector3((arr.Count + 2) * 5, arr.OrderByDescending(x => x.Count).First().Count + 2, arr.OrderByDescending(x => x.Count).First().Count + 2);
 
-        _camera.transform.position = new Vector3(shPos.position.x,shPos.position.y,-1);
-        _camera.orthographicSize = arr.Count/2 + 1;
+        _camera.transform.position = _player.transform.position;
+        _camera.transform.position += new Vector3(0, 0, -1);
+        _camera.transform.SetParent(_player.transform);
+        //_camera.orthographicSize = arr.Count/2 + 1;
     }
 }
