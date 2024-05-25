@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/MainMenuStyle.uss?fileID=7433441132597879392&amp;guid=d28366e658d5e3d46a1c769d33a1e9e5&amp;type=3#MainMenuStyle" />
+    <ui:VisualElement name="MainView" style="flex-grow: 1; justify-content: center; align-items: auto;">
+        <ui:Button text="Start game" parse-escape-sequences="true" display-tooltip-when-elided="true" name="StartGameButton" style="justify-content: center; align-self: center; align-items: center; width: 383px; height: 69px; flex-direction: column; flex-wrap: nowrap; position: relative; opacity: 1; display: flex; visibility: visible; overflow: hidden; -unity-text-align: middle-center; top: auto;" />
+        <ui:Button text="Tutorial" parse-escape-sequences="true" display-tooltip-when-elided="true" name="TutorialButton" style="justify-content: center; align-self: center; align-items: center; width: 383px; height: 69px; flex-direction: column; flex-wrap: nowrap; position: relative; opacity: 1; display: flex; visibility: visible; overflow: hidden; -unity-text-align: middle-center; top: auto;" />
+        <ui:Button text="Quit game" parse-escape-sequences="true" display-tooltip-when-elided="true" name="QuitButton" style="justify-content: center; align-self: center; align-items: center; width: 383px; height: 69px; flex-direction: column; flex-wrap: nowrap; position: relative; opacity: 1; display: flex; visibility: visible; overflow: hidden; -unity-text-align: middle-center; top: auto;" />
+    </ui:VisualElement>
+</ui:UXML>
