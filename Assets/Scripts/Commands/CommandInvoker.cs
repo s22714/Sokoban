@@ -25,4 +25,13 @@ public class CommandInvoker
     {
         _undoStack.Clear();
     }
+
+    public static void Reset()
+    {
+        while (_undoStack.Count > 0)
+        {
+            ICommand activeCommand = _undoStack.Pop();
+            activeCommand.Undo();
+        }
+    }
 }

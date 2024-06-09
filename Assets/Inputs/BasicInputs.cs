@@ -53,6 +53,15 @@ public partial class @BasicInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Reset"",
+                    ""type"": ""Button"",
+                    ""id"": ""270fac10-164c-4bc8-9eae-b870bc033763"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -60,7 +69,7 @@ public partial class @BasicInputs: IInputActionCollection2, IDisposable
                     ""name"": ""2D Vector"",
                     ""id"": ""d3cb9cac-9eb2-4f2a-b492-c2715418c543"",
                     ""path"": ""2DVector"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Move"",
@@ -187,6 +196,28 @@ public partial class @BasicInputs: IInputActionCollection2, IDisposable
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""702c1b06-0952-47ee-a557-3f929c175f3e"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reset"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b53526f8-1a6c-4346-aa8d-d9ba8454061e"",
+                    ""path"": ""<Keyboard>/rightCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reset"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -210,6 +241,7 @@ public partial class @BasicInputs: IInputActionCollection2, IDisposable
         m_BasicMouseAndKeys_Move = m_BasicMouseAndKeys.FindAction("Move", throwIfNotFound: true);
         m_BasicMouseAndKeys_Undo = m_BasicMouseAndKeys.FindAction("Undo", throwIfNotFound: true);
         m_BasicMouseAndKeys_Pause = m_BasicMouseAndKeys.FindAction("Pause", throwIfNotFound: true);
+        m_BasicMouseAndKeys_Reset = m_BasicMouseAndKeys.FindAction("Reset", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -274,6 +306,7 @@ public partial class @BasicInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_BasicMouseAndKeys_Move;
     private readonly InputAction m_BasicMouseAndKeys_Undo;
     private readonly InputAction m_BasicMouseAndKeys_Pause;
+    private readonly InputAction m_BasicMouseAndKeys_Reset;
     public struct BasicMouseAndKeysActions
     {
         private @BasicInputs m_Wrapper;
@@ -281,6 +314,7 @@ public partial class @BasicInputs: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_BasicMouseAndKeys_Move;
         public InputAction @Undo => m_Wrapper.m_BasicMouseAndKeys_Undo;
         public InputAction @Pause => m_Wrapper.m_BasicMouseAndKeys_Pause;
+        public InputAction @Reset => m_Wrapper.m_BasicMouseAndKeys_Reset;
         public InputActionMap Get() { return m_Wrapper.m_BasicMouseAndKeys; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -299,6 +333,9 @@ public partial class @BasicInputs: IInputActionCollection2, IDisposable
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
+            @Reset.started += instance.OnReset;
+            @Reset.performed += instance.OnReset;
+            @Reset.canceled += instance.OnReset;
         }
 
         private void UnregisterCallbacks(IBasicMouseAndKeysActions instance)
@@ -312,6 +349,9 @@ public partial class @BasicInputs: IInputActionCollection2, IDisposable
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
+            @Reset.started -= instance.OnReset;
+            @Reset.performed -= instance.OnReset;
+            @Reset.canceled -= instance.OnReset;
         }
 
         public void RemoveCallbacks(IBasicMouseAndKeysActions instance)
@@ -343,5 +383,6 @@ public partial class @BasicInputs: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnUndo(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+        void OnReset(InputAction.CallbackContext context);
     }
 }

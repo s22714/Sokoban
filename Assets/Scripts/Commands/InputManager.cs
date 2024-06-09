@@ -23,6 +23,7 @@ public class InputManager : MonoBehaviour, IBasicMouseAndKeysActions
         _inputs.BasicMouseAndKeys.Move.performed += OnMove;
         _inputs.BasicMouseAndKeys.Undo.performed += OnUndo;
         _inputs.BasicMouseAndKeys.Pause.performed += OnPause;
+        _inputs.BasicMouseAndKeys.Reset.performed += OnReset;
     }
 
     private void OnDisable()
@@ -31,6 +32,7 @@ public class InputManager : MonoBehaviour, IBasicMouseAndKeysActions
         _inputs.BasicMouseAndKeys.Move.performed -= OnMove;
         _inputs.BasicMouseAndKeys.Undo.performed -= OnUndo;
         _inputs.BasicMouseAndKeys.Pause.performed -= OnPause;
+        _inputs.BasicMouseAndKeys.Reset.performed -= OnReset;
     }
 
     private void RunPlayerCommand(PlayerMover playerMover, Vector3 movement)
@@ -62,5 +64,10 @@ public class InputManager : MonoBehaviour, IBasicMouseAndKeysActions
     public void OnPause(InputAction.CallbackContext context)
     {
         GameGuiManager.PauseEvent?.Invoke();
+    }
+
+    public void OnReset(InputAction.CallbackContext context)
+    {
+        CommandInvoker.Reset();
     }
 }
