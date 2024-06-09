@@ -69,7 +69,7 @@ public partial class @BasicInputs: IInputActionCollection2, IDisposable
                     ""name"": ""2D Vector"",
                     ""id"": ""d3cb9cac-9eb2-4f2a-b492-c2715418c543"",
                     ""path"": ""2DVector"",
-                    ""interactions"": ""Press"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Move"",
