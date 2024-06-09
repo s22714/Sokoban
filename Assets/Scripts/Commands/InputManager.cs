@@ -36,9 +36,10 @@ public class InputManager : MonoBehaviour, IBasicMouseAndKeysActions
             return;
         }
 
-        if (playerMover.IsValidMove(movement))
+        MoveCommand command = new MoveCommand(playerMover, movement);
+
+        if (playerMover.IsValidMove(movement,command))
         {
-            ICommand command = new MoveCommand(playerMover, movement);
             CommandInvoker.ExecuteCommand(command);
         }
     }

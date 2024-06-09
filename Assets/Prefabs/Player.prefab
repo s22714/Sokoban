@@ -174,3 +174,6 @@ MonoBehaviour:
   _obstacleLayer:
     serializedVersion: 2
     m_Bits: 64
+  _boxLayer:
+    serializedVersion: 2
+    m_Bits: 128
