@@ -44,6 +44,15 @@ public partial class @BasicInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""56c16137-6ce7-4724-b7e1-11303b571a4d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -167,6 +176,17 @@ public partial class @BasicInputs: IInputActionCollection2, IDisposable
                     ""action"": ""Undo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""35e27da7-1dde-4cc8-aa6e-570c736c9a3b"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -189,6 +209,7 @@ public partial class @BasicInputs: IInputActionCollection2, IDisposable
         m_BasicMouseAndKeys = asset.FindActionMap("BasicMouseAndKeys", throwIfNotFound: true);
         m_BasicMouseAndKeys_Move = m_BasicMouseAndKeys.FindAction("Move", throwIfNotFound: true);
         m_BasicMouseAndKeys_Undo = m_BasicMouseAndKeys.FindAction("Undo", throwIfNotFound: true);
+        m_BasicMouseAndKeys_Pause = m_BasicMouseAndKeys.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -252,12 +273,14 @@ public partial class @BasicInputs: IInputActionCollection2, IDisposable
     private List<IBasicMouseAndKeysActions> m_BasicMouseAndKeysActionsCallbackInterfaces = new List<IBasicMouseAndKeysActions>();
     private readonly InputAction m_BasicMouseAndKeys_Move;
     private readonly InputAction m_BasicMouseAndKeys_Undo;
+    private readonly InputAction m_BasicMouseAndKeys_Pause;
     public struct BasicMouseAndKeysActions
     {
         private @BasicInputs m_Wrapper;
         public BasicMouseAndKeysActions(@BasicInputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_BasicMouseAndKeys_Move;
         public InputAction @Undo => m_Wrapper.m_BasicMouseAndKeys_Undo;
+        public InputAction @Pause => m_Wrapper.m_BasicMouseAndKeys_Pause;
         public InputActionMap Get() { return m_Wrapper.m_BasicMouseAndKeys; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -273,6 +296,9 @@ public partial class @BasicInputs: IInputActionCollection2, IDisposable
             @Undo.started += instance.OnUndo;
             @Undo.performed += instance.OnUndo;
             @Undo.canceled += instance.OnUndo;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         private void UnregisterCallbacks(IBasicMouseAndKeysActions instance)
@@ -283,6 +309,9 @@ public partial class @BasicInputs: IInputActionCollection2, IDisposable
             @Undo.started -= instance.OnUndo;
             @Undo.performed -= instance.OnUndo;
             @Undo.canceled -= instance.OnUndo;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         public void RemoveCallbacks(IBasicMouseAndKeysActions instance)
@@ -313,5 +342,6 @@ public partial class @BasicInputs: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnUndo(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

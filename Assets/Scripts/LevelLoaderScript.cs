@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 public class LevelLoaderScript : MonoBehaviour
 {
-    private string _levelsPath = "Assets/Levels/levels.txt";
-    [SerializeField] private int _levelToLoad = 0;
+    private string _levelsPath = "Assets/Levels";
     private bool _recordLevel = false;
 
     [SerializeField] private GameObject _grassBlock;
@@ -35,17 +35,29 @@ public class LevelLoaderScript : MonoBehaviour
 
     private void Awake()
     {
-        var arr = GetLevelArray(_levelToLoad);
+        DirectoryInfo dir = new DirectoryInfo(_levelsPath);
+        var files = dir.GetFiles("*txt");
+        if (files.Length == 0)
+        {
+            SceneManager.LoadScene(0);
+            return;
+        }
+        if (GameModifiers.levelNumber >= files.Length)
+        {
+            SceneManager.LoadScene(0);
+            return;
+        }
+        var arr = GetLevelArray(files[GameModifiers.levelNumber].ToString());
         InstantiateLevel(arr);
     }
 
-    private List<List<char>> GetLevelArray(int _levelToLoad)
+    private List<List<char>> GetLevelArray(string path)
     {
         var level = new List<List<char>>();
 
         try
         {
-            StreamReader sr = new(_levelsPath);
+            StreamReader sr = new(path);
 
             var line = sr.ReadLine();
             while(line != null)
@@ -115,12 +127,13 @@ public class LevelLoaderScript : MonoBehaviour
         }
 
         var shPos = _gridShader.transform;
-        shPos.position = new Vector2(0.5f,0.5f);
-        shPos.localScale = new Vector3((arr.Count + 2) * 5, (arr.OrderByDescending(x => x.Count).First().Count + 2)*3, (arr.OrderByDescending(x => x.Count).First().Count + 2) * 3);
+        shPos.position = new Vector2(0f,0f);
+        shPos.localScale = new Vector3(501, 501, 501);
 
         _camera.transform.position = _player.transform.position;
         _camera.transform.position += new Vector3(0, 0, -1);
         _camera.transform.SetParent(_player.transform);
         //_camera.orthographicSize = arr.Count/2 + 1;
+
     }
 }

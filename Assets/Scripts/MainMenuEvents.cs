@@ -27,6 +27,7 @@ public class MainMenuEvents : MonoBehaviour
     }
     private void StartGame(ClickEvent evt)
     {
+        GameModifiers.levelNumber = 0;
         SceneManager.LoadScene(1);
     }
 

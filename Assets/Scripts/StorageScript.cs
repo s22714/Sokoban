@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StorageScript : MonoBehaviour
 {
@@ -21,6 +23,12 @@ public class StorageScript : MonoBehaviour
         if (collision.CompareTag("Crate"))
         {
             activated = true;
+        }
+        if (allStorages.TrueForAll(x => x.activated))
+        {
+            CommandInvoker.ClearStack();
+            GameModifiers.levelNumber++;
+            SceneManager.LoadScene(1);
         }
     }
 

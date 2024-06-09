@@ -46,12 +46,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _levelToLoad: 0
   _grassBlock: {fileID: 4987239944133178198, guid: b3aeece5680db5343a2691ba38b8ac4c, type: 3}
-  _wallBlock: {fileID: 4104079634948415435, guid: 55df9fe6a05f8834692a658cab1753f3, type: 3}
+  _singleWallTile: {fileID: 11400000, guid: 67007708458e4ac44bb36ecf89ebd6e7, type: 2}
   _outerWallBlock: {fileID: 1837045235259238152, guid: 72ee40009f1704343b1b4355aa1bd208, type: 3}
   _crateBlock: {fileID: 6398858218673814010, guid: 9e849902e649cd946a0f7c8d0ccfb2b2, type: 3}
   _storageBlock: {fileID: 5491474568995430137, guid: 1d12f7562e6310244a5de629b79e870f, type: 3}
   _playerPrefab: {fileID: 5169059109632446417, guid: 10253382f53873344ae4c5d21964aedd, type: 3}
   _parent: {fileID: 0}
   _inputManager: {fileID: 0}
+  _wallsTilemap: {fileID: 0}
+  _wallTileBase: {fileID: 11400000, guid: 01582771969d3e2448f431ecc0482f40, type: 2}
+  _groundTilemap: {fileID: 0}
+  _groundTileBase: {fileID: 11400000, guid: 23fb111f284448640981649c6bd5d998, type: 2}
   _gridShader: {fileID: 0}
   _camera: {fileID: 0}

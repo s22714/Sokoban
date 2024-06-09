@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class GameModifiers : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public static int levelNumber;
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("Managers");
+
+        if(objs.Length > 1)
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
     }
 }

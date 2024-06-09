@@ -20,4 +20,9 @@ public class CommandInvoker
             activeCommand.Undo();
         }
     }
+
+    public static void ClearStack()
+    {
+        _undoStack.Clear();
+    }
 }
