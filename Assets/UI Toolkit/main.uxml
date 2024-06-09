@@ -5,4 +5,9 @@
         <ui:Button text="Tutorial" parse-escape-sequences="true" display-tooltip-when-elided="true" name="TutorialButton" style="justify-content: center; align-self: center; align-items: center; width: 383px; height: 69px; flex-direction: column; flex-wrap: nowrap; position: relative; opacity: 1; display: flex; visibility: visible; overflow: hidden; -unity-text-align: middle-center; top: auto;" />
         <ui:Button text="Quit game" parse-escape-sequences="true" display-tooltip-when-elided="true" name="QuitButton" style="justify-content: center; align-self: center; align-items: center; width: 383px; height: 69px; flex-direction: column; flex-wrap: nowrap; position: relative; opacity: 1; display: flex; visibility: visible; overflow: hidden; -unity-text-align: middle-center; top: auto;" />
     </ui:VisualElement>
+    <ui:VisualElement name="TutorialView" style="flex-grow: 1; align-items: center; justify-content: center; position: absolute; height: 100%; width: 100%;">
+        <ui:Label tabindex="-1" text="W A S D or arrows - movement" parse-escape-sequences="true" display-tooltip-when-elided="true" style="font-size: 76px;" />
+        <ui:Label tabindex="-1" text="Q or numpad0 - to undo" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Label" style="position: relative; align-items: stretch; font-size: 76px;" />
+        <ui:Button text="Exit Tutorial" parse-escape-sequences="true" display-tooltip-when-elided="true" name="QuitTutorialButton" style="justify-content: center; align-self: center; align-items: center; width: 383px; height: 69px; flex-direction: column; flex-wrap: nowrap; position: relative; opacity: 1; display: flex; visibility: visible; overflow: hidden; -unity-text-align: middle-center; top: auto;" />
+    </ui:VisualElement>
 </ui:UXML>
