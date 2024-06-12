@@ -52,6 +52,7 @@ public class InputManager : MonoBehaviour, IBasicMouseAndKeysActions
 
     public void OnMove(InputAction.CallbackContext context)
     {
+        Debug.Log("input");
         Vector2 temp = context.ReadValue<Vector2>();
         RunPlayerCommand(_player, new Vector3( temp.x, temp.y ));
     }

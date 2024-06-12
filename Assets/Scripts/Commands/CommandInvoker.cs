@@ -1,15 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class CommandInvoker
 {
-    private static Stack<ICommand> _undoStack = new Stack<ICommand>();
+    public static Stack<ICommand> _undoStack = new Stack<ICommand>();
 
     public static void ExecuteCommand(ICommand command)
     {
-        command.Execute();
+        Debug.Log("cokolwiek");
         _undoStack.Push(command);
+        command.Execute();
+        
     }
 
     public static void UndoCommand()

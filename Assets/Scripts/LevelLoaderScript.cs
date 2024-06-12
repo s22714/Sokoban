@@ -33,6 +33,8 @@ public class LevelLoaderScript : MonoBehaviour
 
     private GameObject _player;
 
+    List<List<char>> _arr;
+
     private void Awake()
     {
         DirectoryInfo dir = new DirectoryInfo(_levelsPath);
@@ -47,8 +49,17 @@ public class LevelLoaderScript : MonoBehaviour
             SceneManager.LoadScene(0);
             return;
         }
-        var arr = GetLevelArray(files[GameModifiers.levelNumber].ToString());
-        InstantiateLevel(arr);
+        _arr = GetLevelArray(files[GameModifiers.levelNumber].ToString());
+        //InstantiateLevel(arr);
+
+        
+        Invoke(nameof(InstantiateLevel),2);
+
+    }
+    private void Start()
+    {
+        CommandInvoker.ClearStack();
+        Debug.Log(CommandInvoker._undoStack.Count);
     }
 
     private List<List<char>> GetLevelArray(string path)
@@ -82,9 +93,9 @@ public class LevelLoaderScript : MonoBehaviour
         return level;
     }
 
-    private void InstantiateLevel(List<List<char>> arr)
+    private void InstantiateLevel(/*List<List<char>> arr*/)
     {
-
+        var arr = _arr;
         _wallsTilemap.FloodFill(new Vector3Int(arr.Count, arr.OrderByDescending(x => x.Count).First().Count), _wallTileBase);
 
         for (int i = 0; i < arr.Count; i++)
@@ -135,5 +146,6 @@ public class LevelLoaderScript : MonoBehaviour
         _camera.transform.SetParent(_player.transform);
         //_camera.orthographicSize = arr.Count/2 + 1;
 
+        
     }
 }
