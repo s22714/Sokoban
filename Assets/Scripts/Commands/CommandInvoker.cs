@@ -5,11 +5,10 @@ using UnityEngine;
 
 public class CommandInvoker
 {
-    public static Stack<ICommand> _undoStack = new Stack<ICommand>();
+    public static Stack<MoveCommand> _undoStack = new Stack<MoveCommand>();
 
-    public static void ExecuteCommand(ICommand command)
+    public static void ExecuteCommand(MoveCommand command)
     {
-        Debug.Log("cokolwiek");
         _undoStack.Push(command);
         command.Execute();
         
@@ -17,11 +16,11 @@ public class CommandInvoker
 
     public static void UndoCommand()
     {
-        if (_undoStack.Count > 0)
-        {
-            ICommand activeCommand = _undoStack.Pop();
-            activeCommand.Undo();
-        }
+        if (_undoStack.Count == 0) return;
+        
+        ICommand activeCommand = _undoStack.Pop();
+        activeCommand.Undo();
+        
     }
 
     public static void ClearStack()
@@ -31,10 +30,12 @@ public class CommandInvoker
 
     public static void Reset()
     {
+        if (_undoStack.Count == 0) return;
         while (_undoStack.Count > 0)
         {
-            ICommand activeCommand = _undoStack.Pop();
-            activeCommand.Undo();
+            MoveCommand activeCommand = _undoStack.Pop();
+            activeCommand._playerMover.ResetPosition();
+            activeCommand._boxMover?.ResetPosition();
         }
     }
 }

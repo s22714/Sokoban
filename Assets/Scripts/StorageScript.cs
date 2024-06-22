@@ -8,6 +8,7 @@ public class StorageScript : MonoBehaviour
 {
     public static List<StorageScript> allStorages = new List<StorageScript>();
     public bool activated = false;
+    public static bool canFinish = false;
 
     private void OnEnable()
     {
@@ -22,10 +23,27 @@ public class StorageScript : MonoBehaviour
     {
         if (collision.CompareTag("Crate"))
         {
-            activated = true;
+            StartCoroutine(WaitForStop(collision.GetComponent<BoxMover>()));
         }
+        
+    }
+
+    private IEnumerator WaitForStop(BoxMover boxMover)
+    {
+        while (boxMover.moving)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+        activated = true;
         if (allStorages.TrueForAll(x => x.activated))
         {
+            PlayerMover._animator.SetBool("Win", true);
+            
+            while(!canFinish)
+            {
+                yield return new WaitForSeconds(0.1f);
+            }
+
             CommandInvoker.ClearStack();
             GameModifiers.levelNumber++;
             SceneManager.LoadScene(1);

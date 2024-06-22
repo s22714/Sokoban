@@ -28,7 +28,7 @@ public class InputManager : MonoBehaviour, IBasicMouseAndKeysActions
 
     private void OnDisable()
     {
-        _inputs.Disable();
+        _inputs.Dispose();
         _inputs.BasicMouseAndKeys.Move.performed -= OnMove;
         _inputs.BasicMouseAndKeys.Undo.performed -= OnUndo;
         _inputs.BasicMouseAndKeys.Pause.performed -= OnPause;
@@ -52,13 +52,15 @@ public class InputManager : MonoBehaviour, IBasicMouseAndKeysActions
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        Debug.Log("input");
         Vector2 temp = context.ReadValue<Vector2>();
         RunPlayerCommand(_player, new Vector3( temp.x, temp.y ));
     }
-
     public void OnUndo(InputAction.CallbackContext context)
     {
+        if (_player.moving)
+        {
+            return;
+        }
         CommandInvoker.UndoCommand();
     }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MoveCommand : ICommand
 {
-    PlayerMover _playerMover;
+    public PlayerMover _playerMover;
     public BoxMover _boxMover;
     Vector3 _movement;
 

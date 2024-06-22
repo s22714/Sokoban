@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +11,6 @@ using UnityEngine.Tilemaps;
 public class LevelLoaderScript : MonoBehaviour
 {
     private string _levelsPath = "Assets/Levels";
-    private bool _recordLevel = false;
 
     [SerializeField] private GameObject _grassBlock;
     [SerializeField] private TileBase _singleWallTile;
@@ -29,7 +29,7 @@ public class LevelLoaderScript : MonoBehaviour
 
     [SerializeField] private GameObject _gridShader;
 
-    [SerializeField] private Camera _camera;
+    [SerializeField] private CinemachineVirtualCamera _camera;
 
     private GameObject _player;
 
@@ -50,10 +50,8 @@ public class LevelLoaderScript : MonoBehaviour
             return;
         }
         _arr = GetLevelArray(files[GameModifiers.levelNumber].ToString());
-        //InstantiateLevel(arr);
-
+        InstantiateLevel();
         
-        Invoke(nameof(InstantiateLevel),2);
 
     }
     private void Start()
@@ -93,7 +91,7 @@ public class LevelLoaderScript : MonoBehaviour
         return level;
     }
 
-    private void InstantiateLevel(/*List<List<char>> arr*/)
+    private void InstantiateLevel()
     {
         var arr = _arr;
         _wallsTilemap.FloodFill(new Vector3Int(arr.Count, arr.OrderByDescending(x => x.Count).First().Count), _wallTileBase);
@@ -141,11 +139,6 @@ public class LevelLoaderScript : MonoBehaviour
         shPos.position = new Vector2(0f,0f);
         shPos.localScale = new Vector3(501, 501, 501);
 
-        _camera.transform.position = _player.transform.position;
-        _camera.transform.position += new Vector3(0, 0, -1);
-        _camera.transform.SetParent(_player.transform);
-        //_camera.orthographicSize = arr.Count/2 + 1;
-
-        
+        _camera.Follow = _player.transform;
     }
 }
