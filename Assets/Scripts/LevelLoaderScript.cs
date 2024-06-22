@@ -57,7 +57,6 @@ public class LevelLoaderScript : MonoBehaviour
     private void Start()
     {
         CommandInvoker.ClearStack();
-        Debug.Log(CommandInvoker._undoStack.Count);
     }
 
     private List<List<char>> GetLevelArray(string path)
