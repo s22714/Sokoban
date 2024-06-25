@@ -10,7 +10,7 @@ using UnityEngine.Tilemaps;
 
 public class LevelLoaderScript : MonoBehaviour
 {
-    private string _levelsPath = "Assets/Levels";
+    private string _levelsPath = "/Resources/Levels";
 
     [SerializeField] private GameObject _grassBlock;
     [SerializeField] private TileBase _singleWallTile;
@@ -37,6 +37,16 @@ public class LevelLoaderScript : MonoBehaviour
 
     private void Awake()
     {
+        string filePath = Path.Combine(Application.streamingAssetsPath, "Levels", $"levels{GameModifiers.levelNumber}.txt");
+
+        if (!File.Exists(filePath))
+        {
+            Debug.Log("level not found");
+            SceneManager.LoadScene(0);
+            return;
+        }
+
+        /*
         DirectoryInfo dir = new DirectoryInfo(_levelsPath);
         var files = dir.GetFiles("*txt");
         if (files.Length == 0)
@@ -49,7 +59,10 @@ public class LevelLoaderScript : MonoBehaviour
             SceneManager.LoadScene(0);
             return;
         }
-        _arr = GetLevelArray(files[GameModifiers.levelNumber].ToString());
+        */
+
+        _arr = GetLevelArray(filePath);
+        
         InstantiateLevel();
         
 
