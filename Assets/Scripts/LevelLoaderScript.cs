@@ -46,20 +46,6 @@ public class LevelLoaderScript : MonoBehaviour
             return;
         }
 
-        /*
-        DirectoryInfo dir = new DirectoryInfo(_levelsPath);
-        var files = dir.GetFiles("*txt");
-        if (files.Length == 0)
-        {
-            SceneManager.LoadScene(0);
-            return;
-        }
-        if (GameModifiers.levelNumber >= files.Length)
-        {
-            SceneManager.LoadScene(0);
-            return;
-        }
-        */
 
         _arr = GetLevelArray(filePath);
         
